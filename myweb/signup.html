@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form </title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+
+<body>
+    <div class="signup">
+        <form id="mainForm">
+            <h2>Sign Up</h2>
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="text" required id="firstname">
+                <label>First Name</label>
+                <div class="input-line"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="text" required id="lastname">
+                <label>Last Name</label>
+                <div class="input-line"></div>
+            </div>
+           
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="email" required id="email">
+                <label>Email</label>
+                <div class="input-line"></div>
+            </div>
+            <div class="input-box">
+                <span class="icon"></span>
+                <input type="password" required id="password">
+                <label>Password</label>
+                <div class="input-line"></div>
+            </div>
+            <button type="submit">Sign Up</button>
+            <div class="register-link">
+                <p>Already have an account? <a href="login.html">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script type="module">
+     
+     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-app.js";
+        import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.2/firebase-database.js";
+        import { getAuth, createUserWithEmailAndPassword} from "https://www.gstatic.com/firebasejs/10.7.2/firebase-auth.js";
+      
+        const firebaseConfig = {
+    apiKey: "AIzaSyC7-artYbbFEL7GPTLquULWHQN5UBmLVBo",
+    authDomain: "notension-2b8c6.firebaseapp.com",
+    databaseURL: "https://notension-2b8c6-default-rtdb.firebaseio.com",
+    projectId: "notension-2b8c6",
+    storageBucket: "notension-2b8c6.appspot.com",
+    messagingSenderId: "236119611894",
+    appId: "1:236119611894:web:d6b771f8658a7fc5854fd7",
+    measurementId: "G-MC455RZH8E"
+  };
+
+      
+       
+        const app = initializeApp(firebaseConfig);
+        const db= getDatabase();
+        const auth = getAuth(app);
+        
+        let firstname= document.getElementById('firstname');
+        let lastname= document.getElementById('lastname');
+        let email= document.getElementById('email');
+        let contact= document.getElementById('contact');
+        let password= document.getElementById('password');
+        let mainForm= document.getElementById('mainForm');
+
+        let RegisterUser = evt => {
+            evt.preventDefault();
+
+            createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then((credentials)=>{
+               set(ref(db, 'UsersAuthList/' + credentials.user.uid),{
+                firstname: firstname.value,
+                lastname: lastname.value,
+                 contact: contact.value
+               })
+              alert('Registration Sucessful!');
+             
+              
+            })
+            .catch((error)=>{
+                alert(error.message);
+                console.log(error.code);
+                console.log(error.message);
+            })
+        }
+        mainForm.addEventListener('submit', RegisterUser);
+
+      </script>
+    
+</body>
+
+</html>
